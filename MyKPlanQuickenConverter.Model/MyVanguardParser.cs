@@ -57,17 +57,21 @@ namespace MyKPlanQuickenConverter.Model
                     cells.Add(cellSelect.Current.Value.Trim());
                 }
 
-                if (cells.Count == 8)
+                if (cells.Count == 8 && (cells[4] == "EMPLOYEE 401(K)" || cells[4] == "EMPLOYER MATCH"))
                 {
                     TransactionType tType = TransactionType.Buy;
 
-                    if (cells[3].Contains("Short-Term Earnings") || cells[3] == "Dividend")
+                    if (cells[3].Contains("Short-Term Earnings") || cells[3] == "Dividend" || cells[3] == "Earnings")
                     {
                         tType = TransactionType.ReinvestDividend;
                     }
                     else if (cells[3] == "Contributions")
                     {
                         tType = TransactionType.Buy;
+                    }
+                    else if (cells[3] == "ADP/ACP Refunds")
+                    {
+                        tType = TransactionType.Sell;
                     }
                     else
                     {

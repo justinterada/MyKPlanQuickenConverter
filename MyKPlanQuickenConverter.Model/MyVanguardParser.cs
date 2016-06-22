@@ -11,6 +11,13 @@ namespace MyKPlanQuickenConverter.Model
 {
     public class MyVanguardParser
     {
+        private List<String> accountsToFilter = new List<String>();
+
+        public MyVanguardParser(params string[] allAccountsToFilter)
+        {
+            accountsToFilter.AddRange(allAccountsToFilter);
+        }
+
         public Transaction[] GetTransactionsFromAccountHistory(Stream stream)
         {
             StreamReader reader = new StreamReader(stream);
@@ -57,7 +64,7 @@ namespace MyKPlanQuickenConverter.Model
                     cells.Add(cellSelect.Current.Value.Trim());
                 }
 
-                if (cells.Count == 8 && (cells[4] == "EMPLOYEE 401(K)" || cells[4] == "EMPLOYER MATCH"))
+                if (cells.Count == 8 && (accountsToFilter.Contains(cells[4])))
                 {
                     TransactionType tType = TransactionType.Buy;
 
